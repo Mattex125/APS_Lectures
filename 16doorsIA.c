@@ -5,6 +5,7 @@
 int tryCombination(int S[]);
 void answer(int S[], int D[]);
 
+
 void subprob1(int n,int *s,int *d){
 
     int prev = tryCombination(s);

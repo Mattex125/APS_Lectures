@@ -56,23 +56,87 @@ int fill_segtree(segtree_node segtree[], int node, treap_node treap_nodes[]){
      
 }
 
+int query_segtree(segtree_node segtree[], int node,
+                  treap_node treap_nodes[], int left, int right) {
+  int left_max, right_max;
+
+  if (right < segtree[node].left || left > segtree[node].right) //non c'entra
+    return -1;
+
+  if (left <= segtree[node].left && segtree[node].right <= right)
+    return segtree[node].maxidx;
+
+  left_max = query_segtree(segtree, node * 2,
+                           treap_nodes, left, right);
+  right_max = query_segtree(segtree, node * 2 + 1,
+                            treap_nodes, left, right);
+    //lookup for max
+  if (left_max == -1)
+    return right_max;
+  if (right_max == -1)
+    return left_max;
+  if (treap_nodes[left_max].priority > treap_nodes[right_max].priority)
+    return left_max;
+  return right_max;
+}
+
 int compare(const void *v1, const void *v2) {
   const treap_node *n1 = v1;
   const treap_node *n2 = v2;
   return strcmp(n1->label, n2->label);
 }
 
+void solve(treap_node treap_nodes[], int left, int right,
+           segtree_node segtree[]) {
+  int root_index;
+  treap_node root;
+  if (left > right)
+    return;
+  root_index = query_segtree(segtree, 1, treap_nodes, left, right);
+  root = treap_nodes[root_index];
+  printf("(");
+  solve(treap_nodes, left, root_index - 1, segtree);
+  printf("%s/%d", root.label, root.priority);
+  solve(treap_nodes, root_index + 1, right, segtree);
+  printf(")");
+}
+
+char *read_label(int size) {
+  char *str;
+  int ch;
+  int len = 0;
+  str = malloc(size);
+  if (str == NULL) {
+    fprintf(stderr, "malloc error\n");
+    exit(1);
+  }
+  while ((ch = getchar()) != EOF && (ch != '/')) {
+    str[len++] = ch;
+    if (len == size) {
+      size = size * 2;
+      str = realloc(str, size);
+      if (str == NULL) {
+        fprintf(stderr, "realloc error\n");
+        exit(1);
+      }
+    }
+  }
+  str[len] = '\0';
+  return str;
+}
+
+
 int main(void) {
-  static treap_node treap_nodes[MAX_NODES];
+  static treap_node treap_nodes[MAX_NODES];//array reading nodes
   static segtree_node segtree[MAX_NODES * 4 + 1];
   int num_nodes, i;
   scanf("%d ", &num_nodes);
   while(num_nodes>0){
-    for (i = 0; i < num_nodes; i++) {
+    for (i = 0; i < num_nodes; i++) { //fulling array
       treap_nodes[i].label = read_label(LABEL_LENGTH);
       scanf("%d ", &treap_nodes[i].priority);
     }
-    qsort(treap_nodes, num_nodes, sizeof(treap_node), compare);
+    qsort(treap_nodes, num_nodes, sizeof(treap_node), compare); 
     init_segtree(segtree, 1, 0, num_nodes - 1);
     fill_segtree(segtree, 1, treap_nodes);
     solve(treap_nodes, 0, num_nodes - 1, segtree);

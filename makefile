@@ -28,7 +28,8 @@ SRC = $(wildcard *.c)
 OBJ = $(SRC:.c=.o)
 INC = $(wildcard *.h)
 # Crea un eseguibile per ogni file .c
-TARGETS = $(SRC:.c=)
+# Esclude i sorgenti che iniziano con "16" (es. 16doorsIA.c)
+TARGETS = $(filter-out 16%,$(SRC:.c=))
 # Librerie esterne
 # Le librerie mod1 e mod2 sono necessarie per il progetto
 # LIB = -lmod1 -lmod2
