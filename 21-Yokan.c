@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #define NATTEMPS 48
-
+#include <time.h>
 //O(Q * (N + M)) --> gotta alloc adjlist in place -->O(N + M + Q*K*logN)
 //i do adj list per every query!
 
@@ -63,14 +63,14 @@ int flavorElemsInSlab(int pieces[], int num_pieces, int left, int right){//i pas
 
 
 void solve2(int yokan[], int Nelems, int left, int right, int Nflavours) {
-    // --- 1. COSTRUZIONE ADJLIST IN SOLVE2 ---
+    //COSTRUZIONE ADJLIST
     int *cnt = calloc(Nflavours + 1, sizeof(int));//counter of n per every flavour
     for (int i = 1; i <= Nelems; i++) {
         cnt[yokan[i]]++;
     }
 
     int **pos = malloc((Nflavours + 1) * sizeof(int *));
-    int *write = calloc(Nflavours + 1, sizeof(int));
+    int *ncurrentxflavor = calloc(Nflavours + 1, sizeof(int));
 
     for (int f = 1; f <= Nflavours; f++) {
         if (cnt[f] > 0) { //if not allced alloc
@@ -82,9 +82,9 @@ void solve2(int yokan[], int Nelems, int left, int right, int Nflavours) {
 
     for (int i = 1; i <= Nelems; i++) {
         int f = yokan[i];
-        pos[f][write[f]++] = i; //fill adjlist
+        pos[f][ncurrentxflavor[f]++] = i; //fill adjlist
     }
-    free(write); 
+    free(ncurrentxflavor); 
 
     // 1. Calcola la lunghezza reale dell'intervallo
     int L = right - left + 1; 
@@ -123,7 +123,7 @@ void solve2(int yokan[], int Nelems, int left, int right, int Nflavours) {
         int rand_piece = (rand()%(right-left+1)+left);
         int rand_flavor = yokan[rand_piece];
         if (rand_flavor == first_flavor) 
-            continue; // Se peschiamo di nuovo lo stesso gusto, riproviamo
+            continue; //next iteration
         int result = flavorElemsInSlab(pos[rand_flavor], cnt[rand_flavor], left, right);
         if (result >= theshold) { // Trovato il secondo gusto per la seconda amica!
             printf("YES\n");
@@ -143,6 +143,7 @@ void solve2(int yokan[], int Nelems, int left, int right, int Nflavours) {
 int main(){
     int m,n;//m nflavours, n nelems yukan
     scanf("%d %d",&n,&m);
+    srand((unsigned)time(NULL));
     int *yokan=malloc((n+1)*sizeof(int));
     for(int i=1; i<=n; i++)
         scanf("%d",&yokan[i]);
