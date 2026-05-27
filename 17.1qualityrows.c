@@ -92,4 +92,4 @@ int rectangle(int r, int c, int h, int w, board q) {
 
 int main(){
     return 0;
-}
+  }
