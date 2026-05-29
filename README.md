@@ -1,6 +1,6 @@
 # Algoritmi e Problem Solving - Unimore 2026
 
-Questa repository raccoglie una serie di soluzioni in C per esercizi del corso di Algoritmi e Problem Solving dell'Universita di Modena e Reggio Emilia, con focus sulle tecniche di progettazione di algoritmi, strutture dati e ottimizzazione della complessita.
+Questa repository raccoglie una serie di soluzioni in C per esercizi del corso di Algoritmi e Problem Solving dell'Universita di Modena e Reggio Emilia (Professore Matteo Cavaliere), con focus sulle tecniche di progettazione di algoritmi, strutture dati e ottimizzazione della complessita.
 
 L'idea del progetto non e quella di costruire un unico programma, ma di mantenere molti sorgenti indipendenti, uno per esercizio o per variante dello stesso esercizio. In diversi casi trovi piu versioni dello stesso problema: una piu semplice, una intermedia, una ottimizzata o una soluzione di riferimento/prof.
 
