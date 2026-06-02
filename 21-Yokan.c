@@ -3,6 +3,7 @@
 #define NATTEMPS 48
 #include <time.h>
 //O(Q * (N + M)) --> gotta alloc adjlist in place -->O(N + M + Q*K*logN)
+
 //i do adj list per every query!
 
 void solve1(int yokan[],int Nelems, int left, int right, int Nflavours){//soling via counting
